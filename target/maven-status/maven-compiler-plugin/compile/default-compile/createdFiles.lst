@@ -1,0 +1,8 @@
+dao\JpaUtil.class
+metier\modele\Establishment.class
+dao\JpaUtil$1.class
+metier\modele\Student.class
+metier\service\EstablishmentService.class
+dao\StudentDao.class
+com\mycompany\instructif\Instrutif.class
+metier\service\StudentService.class
