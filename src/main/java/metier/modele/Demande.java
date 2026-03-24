@@ -3,12 +3,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package metier.modele;
-
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
 import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 
 /**
  *
@@ -17,39 +22,54 @@ import javax.persistence.Id;
 
 @Entity
 public class Demande {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id ;
-    private String matiere;
-    private String theme;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @ManyToOne
+    private Subjects subject;
+
+    private Theme theme;
     private String request;
+
+    @ManyToOne
     private Student student;
-    private Enum Status;
-    private LocalDate Date;
-    private Integer Duration;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    private LocalDate date;
+
+    private Integer duration;
+
+    @OneToOne(mappedBy = "demande", cascade = CascadeType.PERSIST)
+    private Intervention intervention;
 
     public Demande() {
     }
 
-    public Demande(Long id, String matiere, String theme, String request, Student student, LocalDate Date, Integer Duration) {
-        this.id = id;
-        this.matiere = matiere;
+    public Demande(Subjects subject, Theme theme, String request,
+                   Student student, Status status,
+                   LocalDate date, Integer duration) {
+        this.subject = subject;
         this.theme = theme;
         this.request = request;
         this.student = student;
-        this.Date = Date;
-        this.Duration = Duration;
+        this.status = status;
+        this.date = date;
+        this.duration = duration;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getMatiere() {
-        return matiere;
+    public Subjects getSubject() {
+        return subject;
     }
 
-    public String getTheme() {
+    public Theme getTheme() {
         return theme;
     }
 
@@ -61,23 +81,31 @@ public class Demande {
         return student;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
     public LocalDate getDate() {
-        return Date;
+        return date;
     }
 
     public Integer getDuration() {
-        return Duration;
+        return duration;
+    }
+
+    public Intervention getIntervention() {
+        return intervention;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setMatiere(String matiere) {
-        this.matiere = matiere;
+    public void setSubject(Subjects subject) {
+        this.subject = subject;
     }
 
-    public void setTheme(String theme) {
+    public void setTheme(Theme theme) {
         this.theme = theme;
     }
 
@@ -89,22 +117,32 @@ public class Demande {
         this.student = student;
     }
 
-    public void setDate(LocalDate Date) {
-        this.Date = Date;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
-    public void setDuration(Integer Duration) {
-        this.Duration = Duration;
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public void setIntervention(Intervention intervention) {
+        this.intervention = intervention;
     }
 
     @Override
     public String toString() {
-        return "Demande{" + "id=" + id + ", matiere=" + matiere + ", theme=" + theme + ", request=" + request + ", student=" + student + ", Date=" + Date + ", Duration=" + Duration + '}';
+        return "Demande{" +
+                "id=" + id +
+                ", subject=" + subject +
+                ", theme='" + theme + '\'' +
+                ", request='" + request + '\'' +
+                ", status=" + status +
+                ", date=" + date +
+                ", duration=" + duration +
+                '}';
     }
-
-    
-    
-    
-    
-    
 }

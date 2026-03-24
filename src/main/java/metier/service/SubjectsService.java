@@ -1,77 +1,123 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package metier.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import dao.DemandDao;
+import dao.InterventionDao;
 import dao.JpaUtil;
 import dao.SubjectsDao;
-import java.io.InputStream;
+import dao.ThemeDao;
+import java.util.List;
+import metier.modele.Demande;
+import metier.modele.Intervention;
 import metier.modele.Subjects;
+import metier.modele.Theme;
 
-/**
- *
- * @author DELL
- */
 public class SubjectsService {
+
     private static SubjectsDao subjectsDao = new SubjectsDao();
-    public static void initializSubjectsTable(){
-        
-        
+    private ThemeDao themeDao = new ThemeDao();
+    private DemandDao demandDao = new DemandDao();
+    private InterventionDao interventionDao = new InterventionDao();
+
+    public static void initializeSubjectsTable() {
         try {
-
-            // 1️⃣ Create persistence context
             JpaUtil.creerContextePersistance();
-
-            // 2️⃣ Open transaction
             JpaUtil.ouvrirTransaction();
 
-            // 3️⃣ Load JSON file
-            ObjectMapper mapper = new ObjectMapper();
+            Subjects math = new Subjects("math");
+            math.addTheme(new Theme("algebra", math));
 
-            InputStream input =
-                    SubjectsService.class.getClassLoader()
-                    .getResourceAsStream("Subjects.json");
+            subjectsDao.create(math);
 
-            Subjects[] subjects =
-                    mapper.readValue(input, Subjects[].class);
-
-            // 4️⃣ Persist subjects
-            for (Subjects subject : subjects) {
-
-                subjectsDao.create(subject);
-
-            }
-
-            // 5️⃣ Commit transaction
             JpaUtil.validerTransaction();
-
-            System.out.println("Subjects inserted successfully ✅");
+            System.out.println("Subjects inserted successfully");
 
         } catch (Exception e) {
-
-            // rollback if error
             JpaUtil.annulerTransaction();
-
             e.printStackTrace();
 
         } finally {
-
-            // close persistence context
             JpaUtil.fermerContextePersistance();
-
         }
-        
-        
-        
-        
-        
-        
     }
-    
+
+    public void createSubject(Subjects subject) throws Exception {
+        JpaUtil.creerContextePersistance();
+        try {
+            JpaUtil.ouvrirTransaction();
+            subjectsDao.create(subject);
+            JpaUtil.validerTransaction();
+        } catch (Exception e) {
+            JpaUtil.annulerTransaction();
+            throw e;
+        } finally {
+        JpaUtil.fermerContextePersistance();
+    }
+    }
+
+    public void createTheme(Theme theme) throws Exception {
+        
+        JpaUtil.creerContextePersistance();
+        
+        try {
+            JpaUtil.ouvrirTransaction();
+            themeDao.create(theme);
+            JpaUtil.validerTransaction();
+        } catch (Exception e) {
+            JpaUtil.annulerTransaction();
+            throw e;
+        }
+         finally {
+        JpaUtil.fermerContextePersistance();
+    }
+    }
+
+    public void createDemand(Demande demande) throws Exception {
+    JpaUtil.creerContextePersistance();
+
+    try {
+        JpaUtil.ouvrirTransaction();
+
+        demandDao.create(demande);
+
+        JpaUtil.validerTransaction();
+
+    } catch (Exception e) {
+        JpaUtil.annulerTransaction();
+        throw e;
+
+    } finally {
+        JpaUtil.fermerContextePersistance();
+    }
 }
 
+    public void createIntervention(Intervention intervention) throws Exception {
+    JpaUtil.creerContextePersistance();
 
+    try {
+        JpaUtil.ouvrirTransaction();
 
+        interventionDao.create(intervention);
 
+        JpaUtil.validerTransaction();
+
+    } catch (Exception e) {
+        JpaUtil.annulerTransaction();
+        throw e;
+
+    } finally {
+        JpaUtil.fermerContextePersistance();
+    }
+}
+    
+    public List<Subjects> getAllSubjectsWithThemes() {
+    JpaUtil.creerContextePersistance();
+
+    try {
+        
+        return subjectsDao.findAll();
+
+    } finally {
+        JpaUtil.fermerContextePersistance();
+    }
+}
+}

@@ -3,13 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package metier.modele;
-
+import javax.persistence.*;
 import java.util.ArrayList;
-import javax.persistence.ElementCollection;
+import javax.persistence.CascadeType;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -21,23 +23,28 @@ public class Subjects {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     private String name;
-    @ElementCollection
-    private ArrayList<String> themes;
-
-    public Subjects(String name, ArrayList themes) {
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private ArrayList<Theme> themes = new ArrayList<Theme>();
+    
+    
+    
+    public Subjects(String name) {
         this.name = name;
-        this.themes = themes;
     }
 
     public Subjects() {
     }
-    
 
+    public Long getId() {
+        return id;
+    }
+    
+    
     public String getName() {
         return name;
     }
 
-    public ArrayList getThemes() {
+    public ArrayList<Theme> getThemes() {
         return themes;
     }
 
@@ -45,14 +52,22 @@ public class Subjects {
         this.name = name;
     }
 
-    public void setThemes(ArrayList themes) {
+    public void addTheme(Theme theme) {
+        themes.add(theme);
+        theme.setSubjects(this);
+    }
+
+    public void setThemes(ArrayList<Theme> themes) {
         this.themes = themes;
     }
 
     @Override
     public String toString() {
-        return "Subjects{" + "name=" + name + ", themes=" + themes + '}';
+        return "Subjects{" + "id=" + id + ", name=" + name + '}';
     }
+    
+
+    
     
     
     

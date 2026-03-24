@@ -15,7 +15,7 @@ import metier.modele.Student;
  */
 public class EstablishmentDao {
     
-    public void create(Establishment establsihment){
+        public void create(Establishment establsihment){
         EntityManager em = JpaUtil.obtenirContextePersistance();
         em.persist(establsihment);
         
@@ -31,4 +31,5 @@ public class EstablishmentDao {
         return query.getSingleResult();
     }
     
+
 }

@@ -4,8 +4,11 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>metier.modele.Establishment</class>
     <class>metier.modele.Student</class>
-    <class>metier.modele.Demande</class>
+    <class>metier.modele.Intervenant</class>
     <class>metier.modele.Subjects</class>
+    <class>metier.modele.Theme</class>
+    <class>metier.modele.Demande</class>
+    <class>metier.modele.Intervention</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/DASI-DB?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="dasi"/>

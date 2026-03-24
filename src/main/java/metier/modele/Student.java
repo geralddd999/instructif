@@ -5,16 +5,21 @@
 package metier.modele;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.*;
+
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 
 /**
  *
@@ -31,9 +36,14 @@ public class Student {
     private String email;
     private String password;
     private String studentClass;
+   
     private LocalDate birthDate;
-    @OneToMany
+    @ManyToOne
     private Establishment establishment;
+    @OneToMany(mappedBy = "student")
+    private List<Demande> demandes = new ArrayList<>();
+    // would have to change this one to either many to many or many to one, cause a student
+    // can only be registered at one lycee (logic con  
 
     public Long getId() {
         return id;
@@ -94,10 +104,12 @@ public class Student {
         this.establishment = establishment;
     }
 
+
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
     
+
     
 
    
