@@ -10,6 +10,7 @@ import dao.JpaUtil;
 import metier.modele.Establishment;
 import metier.service.EstablishmentService;
 import metier.service.StudentService;
+import metier.service.SubjectsService;
 /**
  *
  * @author gschambiram
@@ -17,23 +18,25 @@ import metier.service.StudentService;
 public class Instrutif {
 
     public static void main(String[] args) {
-        Student student = new Student("lol","lol","lol","lol","lol",LocalDate.parse("2023-01-02"));
+        /*Student student = new Student("lol","lol","lol","lol","lol",LocalDate.parse("2023-01-02"));
+        String Code ="A12456";
         
-        System.out.println(student);
         
         JpaUtil.creerFabriquePersistance();
         
         StudentService stuserv = new StudentService();
         
-        String msg = stuserv.registerStudent(student) ? "success" : "failed";
+        String msg = stuserv.registerStudent(student, Code) ? "success" : "failed";
         
         System.out.println(msg);
         
         EstablishmentService estabServ = new EstablishmentService();
-        Establishment e = estabServ.fetchInfoEst("0691664J");
+        //Establishment e = estabServ.fetchInfoEst("0691664J");
         
-        System.out.println(e);
+        //System.out.println(e);
+        */
         
+        SubjectsService.initializSubjectsTable();
         
     }
 }
