@@ -23,23 +23,37 @@ public class Establishment{
     private Long id;
     private String codeEstablishment;
     private String name;
-    //private String sector;
-    //private String address;
-    //private Integer postalCode;
-    //private String commune;
-    //private Double latitute;
-    //private Double longitude;
-    //private Integer departmentCode;
-    //private Integer academyCode;
-    //private String department;
-    //private String academy;
+    private String sector;
+    private String address;
+    private Integer postalCode;
+    private String commune;
+    private Double latitude;
+    private Double longitude;
+    private String departmentCode;
+    private String academyCode;
+    private String departmentName;
+    private String academyName;
 
     public Establishment() {
     }
 
-    public Establishment(String codeEstablishment, String nameEstablishment) {
+    public Establishment(String codeEstablishment, String name, String sector,
+                         String address, Integer postalCode, String commune,
+                         Double latitude, Double longitude, String departmentCode,
+                         String academyCode, String departmentName, String academyName)
+    {
         this.codeEstablishment = codeEstablishment;
-        this.name = nameEstablishment;
+        this.name = name;
+        this.sector = sector;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.commune = commune;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.departmentCode = departmentCode;
+        this.academyCode = academyCode;
+        this.departmentName = departmentName;
+        this.academyName = academyName;
     }
 
     @Override

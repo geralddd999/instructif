@@ -1,0 +1,72 @@
+package utils;
+
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import java.io.IOException;
+import java.io.StringReader;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+
+import metier.modele.Establishment;
+
+public class EstablishmentsRecordAPI {
+
+    public static JsonObject fetchEstablishmentFromAPI(String establishmentUai){
+        JsonObject result = null;
+
+        try {
+
+            // TODO: adapter l'URL de l'API et la liste des paramètres
+            URI requestUri = URI.create(
+                    "https://data.education.gouv.fr/api/explore/v2.1/catalog/datasets/fr-en-adresse-et-geolocalisation-etablissements-premier-et-second-degre/records"
+                            + "?refine=numero_uai:"+ URLEncoder.encode(establishmentUai, StandardCharsets.UTF_8)
+            );
+
+            HttpClient httpClient = HttpClient.newHttpClient();
+            HttpRequest httpRequest = HttpRequest.newBuilder(requestUri).GET().build();
+            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+            if (httpResponse.statusCode() == 200) {
+                String body = httpResponse.body();
+                //System.out.println(body);
+
+                result = Json.createReader(new StringReader(body)).readObject();
+                result = result.getJsonArray("results").getJsonObject(0);
+            }
+            else {
+                throw new IOException("HTTP Error Status Code "+httpResponse.statusCode());
+            }
+
+        }
+        catch (Exception ex) {
+            ex.printStackTrace(System.err);
+            result = null;
+        }
+
+        return result;
+    }
+    public static Establishment buildEstablishmentFromJSON(JsonObject json){
+
+        String code = json.getString("numero_uai");
+            String name = json.getString("appellation_officielle");
+            String sector = json.getString("secteur_public_prive_libe");
+            String commune = json.getString("libelle_commune");
+            String address = json.getString("adresse_uai");
+            Double lat = json.getJsonNumber("latitude").doubleValue();
+            Double lon = json.getJsonNumber("longitude").doubleValue();
+            String departmentCode = json.getString("code_departement");
+            String academyCode = json.getString("code_academie");
+            String department = json.getString("libelle_departement");
+            String academy = json.getString("libelle_academie");
+            Integer postalCode = Integer.parseInt(json.getString("code_postal_uai"));
+
+            return new Establishment(code, name, sector,
+                    address, postalCode, commune, lat, lon,
+                    departmentCode, academyCode,
+                    department, academy);
+    }
+}

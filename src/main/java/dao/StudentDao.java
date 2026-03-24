@@ -15,6 +15,7 @@ public class StudentDao {
     public void create(Student stu){
         EntityManager em = JpaUtil.obtenirContextePersistance();
         em.persist(stu);
-        
     }
+
+
 }
