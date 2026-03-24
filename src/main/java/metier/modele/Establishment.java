@@ -4,6 +4,7 @@
  */
 package metier.modele;
 
+import jakarta.json.JsonObject;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,9 +16,7 @@ import javax.persistence.Id;
  * @author gschambiram
  */
 @Entity
-public class Establishment{
-
-    
+public class Establishment{ 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
