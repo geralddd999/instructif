@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -31,6 +32,8 @@ public class Student {
     private String password;
     private String studentClass;
     private LocalDate birthDate;
+    @OneToMany
+    private Establishment establishment;
 
     public Long getId() {
         return id;
@@ -55,6 +58,11 @@ public class Student {
     public String getStudentClass() {
         return studentClass;
     }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+    
 
 
 
@@ -81,6 +89,16 @@ public class Student {
     public void setStudentClass(String studentClass) {
         this.studentClass = studentClass;
     }
+
+    public void setEstablishment(Establishment establishment) {
+        this.establishment = establishment;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+    
+    
 
    
     @Override
@@ -114,8 +132,8 @@ public class Student {
         this.email = email;
         this.password = password;
         this.studentClass = studentClass;
-   
         this.birthDate = birthDate;
+        
     }
 
     @Override
