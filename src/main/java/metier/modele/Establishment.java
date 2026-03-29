@@ -25,7 +25,7 @@ public class Establishment{
     private String name;
     private String sector;
     private String address;
-    private Integer postalCode;
+    private String postalCode;
     private String commune;
     private Double latitude;
     private Double longitude;
@@ -38,7 +38,7 @@ public class Establishment{
     }
 
     public Establishment(String codeEstablishment, String name, String sector,
-                         String address, Integer postalCode, String commune,
+                         String address, String postalCode, String commune,
                          Double latitude, Double longitude, String departmentCode,
                          String academyCode, String departmentName, String academyName)
     {

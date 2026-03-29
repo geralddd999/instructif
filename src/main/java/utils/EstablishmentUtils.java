@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package metier.service;
+package utils;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -20,8 +20,8 @@ import metier.modele.Establishment;
  *
  * @author gschambiram
  */
-public class EstablishmentService {
-    public Establishment fetchInfoEst(String codeEstablishment){
+public class EstablishmentUtils {
+    public static Establishment createEstablishmentFromRecord(String codeEstablishment){
         JsonObject result = null;
 
         Establishment resultEstablishment = null;
@@ -63,4 +63,6 @@ public class EstablishmentService {
         
         return resultEstablishment;
     }
+
+    
 }

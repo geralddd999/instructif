@@ -8,8 +8,8 @@ import java.time.LocalDate;
 import metier.modele.Student;
 import dao.JpaUtil;
 import metier.modele.Establishment;
-import metier.service.EstablishmentService;
-import metier.service.StudentService;
+import metier.service.EstablishmentManagementService;
+import metier.service.UserManagementService;
 /**
  *
  * @author gschambiram
@@ -23,13 +23,13 @@ public class Instrutif {
         
         JpaUtil.creerFabriquePersistance();
         
-        StudentService stuserv = new StudentService();
+        UserManagementService stuserv = new UserManagementService();
         
         String msg = stuserv.registerStudent(student) ? "success" : "failed";
         
         System.out.println(msg);
         
-        EstablishmentService estabServ = new EstablishmentService();
+        EstablishmentManagementService estabServ = new EstablishmentManagementService();
         Establishment e = estabServ.fetchInfoEst("0691664J");
         
         System.out.println(e);

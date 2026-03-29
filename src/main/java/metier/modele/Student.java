@@ -5,15 +5,9 @@
 package metier.modele;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
+
 
 /**
  *
@@ -31,6 +25,11 @@ public class Student {
     private String password;
     private String studentClass;
     private LocalDate birthDate;
+
+    // would have to change this one to either many to many or many to one, cause a student
+    // can only be registered at one lycee (logic constraint ig?)
+    @ManyToOne
+    private Establishment establishment;
 
     public Long getId() {
         return id;
@@ -81,6 +80,11 @@ public class Student {
     public void setStudentClass(String studentClass) {
         this.studentClass = studentClass;
     }
+
+    public void setEstablishment(Establishment establishment) {
+        this.establishment = establishment;
+    }
+    
 
    
     @Override

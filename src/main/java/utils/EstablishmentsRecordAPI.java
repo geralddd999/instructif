@@ -15,7 +15,7 @@ import metier.modele.Establishment;
 
 public class EstablishmentsRecordAPI {
 
-    public static JsonObject fetchEstablishmentFromAPI(String establishmentUai){
+    private static JsonObject fetchEstablishmentFromAPI(String establishmentUai){
         JsonObject result = null;
 
         try {
@@ -49,7 +49,11 @@ public class EstablishmentsRecordAPI {
 
         return result;
     }
-    public static Establishment buildEstablishmentFromJSON(JsonObject json){
+    public static Establishment buildEstablishmentFromAPI(String establishmentUai){
+        JsonObject json = EstablishmentsRecordAPI.fetchEstablishmentFromAPI(establishmentUai);
+        if(json == null){
+            return null;
+        }
 
         String code = json.getString("numero_uai");
             String name = json.getString("appellation_officielle");
@@ -62,7 +66,7 @@ public class EstablishmentsRecordAPI {
             String academyCode = json.getString("code_academie");
             String department = json.getString("libelle_departement");
             String academy = json.getString("libelle_academie");
-            Integer postalCode = Integer.parseInt(json.getString("code_postal_uai"));
+            String postalCode = json.getString("code_postal_uai");
 
             return new Establishment(code, name, sector,
                     address, postalCode, commune, lat, lon,
