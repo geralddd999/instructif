@@ -10,4 +10,9 @@ package metier.modele;
  */
 public class TeacherIntervenant extends Intervenant{
     private String  institutionType;
+
+
+    public TeacherIntervenant(){
+
+    }
 }

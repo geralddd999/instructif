@@ -11,4 +11,8 @@ package metier.modele;
 public class StudentIntervenant extends Intervenant {
     private String university; //
     private String speciality; //more like major or something like that
+
+    public StudentIntervenant(){
+
+    }
 }
