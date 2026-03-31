@@ -106,7 +106,7 @@ public class UserManagementService {
     }
 
 
-    public List<Intervenant> findAllAvailableIntervenant(Integer minLevel, Integer maxLevel)
+    public Intervenant findAvailableIntervenant(Integer minLevel, Integer maxLevel)
     /*
     *  Gets an available intervenant for a given student, now its up to debate if to pass the whole student of just
     *  use the getters for the levels, but either way it almost stays the same
@@ -114,12 +114,12 @@ public class UserManagementService {
     {
         IntervenantDao intervenantDao = new IntervenantDao();
         
-        List<Intervenant> availableIntervenants = null;
+        Intervenant interv = null;
         try
         {
             JpaUtil.creerContextePersistance();
             
-            availableIntervenants = intervenantDao.findAvailableIntervenant(minLevel, maxLevel);
+            interv = intervenantDao.findAvailableIntervenant(minLevel, maxLevel);
 
             //here we deal with the logic if we do have an intervenant available of if we just close the ticket
         }
@@ -132,7 +132,7 @@ public class UserManagementService {
             JpaUtil.fermerContextePersistance();
         }
         
-        return availableIntervenants;
+        return interv;
     }
 
     // Manage user login's
@@ -154,4 +154,20 @@ public class UserManagementService {
         return false;
     }
     //notify intervenant of a potential meeting
+    
+    public Student findStudentByEmail(String email)
+    {
+        Student stu = null;
+        StudentDao sDao = new StudentDao();
+        try{
+            JpaUtil.creerContextePersistance();
+            
+            stu = sDao.findByEmail(email);
+        }
+        catch(Exception e){
+            stu = null;
+        }
+        
+        return stu;
+    }
 }

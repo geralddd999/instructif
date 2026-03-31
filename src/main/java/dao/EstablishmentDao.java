@@ -22,13 +22,26 @@ public class EstablishmentDao {
     }
     public Establishment findByCode(String establishmentCode){
         
-        EntityManager em = JpaUtil.obtenirContextePersistance();
-        String jpql = "SELECT e FROM Establishment e WHERE e.codeEstablishment = :code";
         
-        TypedQuery<Establishment> query = em.createQuery(jpql, Establishment.class);
-        query.setParameter("code", establishmentCode);
+        Establishment estab = null;
+        try{
+            EntityManager em = JpaUtil.obtenirContextePersistance();
+            String jpql = "SELECT e FROM Establishment e WHERE e.codeEstablishment = :code";
         
-        return query.getSingleResult();
+            TypedQuery<Establishment> query = em.createQuery(jpql, Establishment.class);
+            query.setParameter("code", establishmentCode);
+            
+            estab = query.getSingleResult();
+        
+        }
+        catch(Exception e)
+        {
+            //
+            estab = null;
+        }
+        
+        return estab;
+        
     }
 
 }

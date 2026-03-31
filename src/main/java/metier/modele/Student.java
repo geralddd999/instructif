@@ -126,6 +126,10 @@ public class Student {
     public String toString() {
         return "Student{" + "id=" + id + ", lastName=" + lastName + ", firstName=" + firstName + ", email=" + email + ", password=" + password + ", studentClass=" + studentClass + ", birthDate=" + birthDate + '}';
     }
+
+    public Establishment getEstablishment() {
+       return this.establishment;
+    }
     
     
 }
