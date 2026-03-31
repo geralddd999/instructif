@@ -12,12 +12,14 @@ import metier.modele.Establishment;
  *
  * @author gschambiram
  */
-public class EstablishmentManagementService {
-    public ArrayList<Establishment> findAll()
-    {
-        
-    }
 
-    //function for statistics
+//could also be called Statistics service, but nevertheless it will be mostly used in the dashboards for the IHM
+public class DashboardService {
+
+    // something for student stats
+
+    // something for intervenant stats
+
+    //function for a single establishment statistics
 
 }

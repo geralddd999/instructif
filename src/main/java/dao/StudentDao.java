@@ -29,5 +29,4 @@ public class StudentDao {
         return query.getSingleResult();
     }
 
-
 }
