@@ -56,6 +56,8 @@ public class IntervenantDao {
             else
             {
                 interv = query.getResultList().get(0);
+                // we consider that once we propose this intervenant he's available
+                interv.setAvailable(false);
             }
             
         }
