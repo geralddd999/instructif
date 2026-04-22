@@ -46,6 +46,7 @@ public class UserManagementService {
             {
                 // establishment already present in the db
                 student.setEstablishment(establishment);
+                success = true;
             }
             else
             {
@@ -118,14 +119,23 @@ public class UserManagementService {
         try
         {
             JpaUtil.creerContextePersistance();
-            
+            JpaUtil.ouvrirTransaction();
+
             interv = intervenantDao.findAvailableIntervenant(minLevel, maxLevel);
 
-            //here we deal with the logic if we do have an intervenant available of if we just close the ticket
+            if (interv != null)
+            {
+                interv.setAvailable(false);
+                interv.setNbInterventions(interv.getNbInterventions() + 1);
+                interv = intervenantDao.update(interv);
+            }
+
+            JpaUtil.validerTransaction();
+            //here we deal with the logic if we do have an intervenant available or if we just close the ticket
         }
         catch(Exception ex)
         {
-            
+            JpaUtil.annulerTransaction();
         }
         finally
         {
@@ -161,13 +171,14 @@ public class UserManagementService {
         StudentDao sDao = new StudentDao();
         try{
             JpaUtil.creerContextePersistance();
-            
             stu = sDao.findByEmail(email);
         }
         catch(Exception e){
             stu = null;
         }
-        
+        finally {
+            JpaUtil.fermerContextePersistance();
+        }
         return stu;
     }
 }

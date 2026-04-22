@@ -26,7 +26,7 @@ public class Intervenant {
     private String lastName;
     private String firstName;
     @Column(unique=true)
-    private String email;
+    private String login;
     private String password;
     private Integer minLevel ;
     private Integer maxLevel ;
@@ -34,13 +34,13 @@ public class Intervenant {
     private Integer nbInterventions;
     private Boolean available ; 
 
-    public Intervenant(String lastName, String firstName, String email,
+    public Intervenant(String lastName, String firstName, String login,
                        String password, Integer minLevel, Integer maxLevel, String phoneNumber,
                        Integer nbInterventions, Boolean available) 
     {
         this.lastName = lastName;
         this.firstName = firstName;
-        this.email = email;
+        this.login = login;
         this.password = password;
         this.minLevel = minLevel;
         this.maxLevel = maxLevel;
@@ -64,8 +64,8 @@ public class Intervenant {
         return firstName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getLogin() {
+        return login;
     }
 
     public String getPassword() {
@@ -96,8 +96,8 @@ public class Intervenant {
         this.firstName = firstName;
     }
 
-    public void setEmail(String login) {
-        this.email = login;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public void setPassword(String password) {
@@ -119,7 +119,7 @@ public class Intervenant {
 
     @Override
     public String toString() {
-        return "Intervenant{" + "id=" + id + ", lastName=" + lastName + ", firstName=" + firstName + ", email=" + email + ", password=" + password + ", level=" + minLevel + ", phoneNumber=" + phoneNumber + ", nbInterventions=" + nbInterventions + ", available=" + available + '}';
+        return "Intervenant{" + "id=" + id + ", lastName=" + lastName + ", firstName=" + firstName + ", login=" + login + ", password=" + password + ", level=" + minLevel + ", phoneNumber=" + phoneNumber + ", nbInterventions=" + nbInterventions + ", available=" + available + '}';
     }
     
     

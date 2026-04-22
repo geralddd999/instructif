@@ -24,7 +24,7 @@ public class IntervenantDao {
     public Intervenant findByEmail(String login)
     {
         EntityManager em = JpaUtil.obtenirContextePersistance();
-        String jpql = "SELECT i FROM Intervenant i WHERE i.email = :searchLogin";
+        String jpql = "SELECT i FROM Intervenant i WHERE i.login = :searchLogin";
         
         TypedQuery<Intervenant> query = em.createQuery(jpql, Intervenant.class);
         query.setParameter("searchLogin", login);
@@ -49,15 +49,10 @@ public class IntervenantDao {
             query.setParameter("minLevel", minLevel);
             query.setParameter("maxLevel",maxLevel);
             
-            if(query.getResultList().isEmpty()) // really necessary bc if its empty it will already throw Ex
+            List<Intervenant> results = query.getResultList();
+            if (!results.isEmpty())
             {
-                interv = null;
-            }
-            else
-            {
-                interv = query.getResultList().get(0);
-                // we consider that once we propose this intervenant he's available
-                interv.setAvailable(false);
+                interv = results.get(0);
             }
             
         }

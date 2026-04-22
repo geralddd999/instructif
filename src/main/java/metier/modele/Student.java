@@ -23,7 +23,7 @@ public class Student {
     @Column(unique=true)
     private String email;
     private String password;
-    private String studentClass;
+    private Integer studentClass;
     private LocalDate birthDate;
 
     // would have to change this one to either many to many or many to one, cause a student
@@ -51,7 +51,7 @@ public class Student {
         return password;
     }
 
-    public String getStudentClass() {
+    public Integer getStudentClass() {
         return studentClass;
     }
 
@@ -77,7 +77,7 @@ public class Student {
         this.password = password;
     }
 
-    public void setStudentClass(String studentClass) {
+    public void setStudentClass(Integer studentClass) {
         this.studentClass = studentClass;
     }
 
@@ -112,7 +112,7 @@ public class Student {
     public Student() {
     }
 
-    public Student(String lastName, String firstName, String email, String password, String studentClass, LocalDate birthDate) {
+    public Student(String lastName, String firstName, String email, String password, Integer studentClass, LocalDate birthDate) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.email = email;

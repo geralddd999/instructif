@@ -17,7 +17,7 @@ public class Instructif {
 
     public static void main(String[] args) {
         Student student = new Student("lol","lol",
-                "lol@unique.com", "lol","lol",
+                "lol@unique.com", "lol", 3,
                 LocalDate.parse("2023-01-02"));
         
         System.out.println(student);
