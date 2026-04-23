@@ -5,14 +5,13 @@
 package metier.modele;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -30,9 +29,12 @@ public class Student {
     @Column(unique=true)
     private String email;
     private String password;
-    private String studentClass;
+    private Integer studentClass;
     private LocalDate birthDate;
-    @OneToMany
+
+    // would have to change this one to either many to many or many to one, cause a student
+    // can only be registered at one lycee (logic constraint ig?)
+    @ManyToOne
     private Establishment establishment;
 
     public Long getId() {
@@ -55,7 +57,7 @@ public class Student {
         return password;
     }
 
-    public String getStudentClass() {
+    public Integer getStudentClass() {
         return studentClass;
     }
 
@@ -86,7 +88,7 @@ public class Student {
         this.password = password;
     }
 
-    public void setStudentClass(String studentClass) {
+    public void setStudentClass(Integer studentClass) {
         this.studentClass = studentClass;
     }
 
@@ -97,6 +99,7 @@ public class Student {
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
+    
     
     
 
@@ -126,7 +129,7 @@ public class Student {
     public Student() {
     }
 
-    public Student(String lastName, String firstName, String email, String password, String studentClass, LocalDate birthDate) {
+    public Student(String lastName, String firstName, String email, String password, Integer studentClass, LocalDate birthDate) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.email = email;
@@ -139,6 +142,10 @@ public class Student {
     @Override
     public String toString() {
         return "Student{" + "id=" + id + ", lastName=" + lastName + ", firstName=" + firstName + ", email=" + email + ", password=" + password + ", studentClass=" + studentClass + ", birthDate=" + birthDate + '}';
+    }
+
+    public Establishment getEstablishment() {
+       return this.establishment;
     }
     
     

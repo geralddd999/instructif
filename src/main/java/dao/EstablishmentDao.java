@@ -4,6 +4,7 @@
  */
 package dao;
 
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import metier.modele.Establishment;
@@ -15,20 +16,49 @@ import metier.modele.Student;
  */
 public class EstablishmentDao {
     
-    public void create(Establishment establsihment){
+    public void create(Establishment establishment){
         EntityManager em = JpaUtil.obtenirContextePersistance();
-        em.persist(establsihment);
+        em.persist(establishment);
         
     }
     public Establishment findByCode(String establishmentCode){
         
-        EntityManager em = JpaUtil.obtenirContextePersistance();
-        String jpql = "SELECT e FROM Establishment e WHERE e.codeEstablishment = :code";
         
-        TypedQuery<Establishment> query = em.createQuery(jpql, Establishment.class);
-        query.setParameter("code", establishmentCode);
+        Establishment estab = null;
+        try{
+            EntityManager em = JpaUtil.obtenirContextePersistance();
+            String jpql = "SELECT e FROM Establishment e WHERE e.codeEstablishment = :code";
         
-        return query.getSingleResult();
+            TypedQuery<Establishment> query = em.createQuery(jpql, Establishment.class);
+            query.setParameter("code", establishmentCode);
+            
+            estab = query.getSingleResult();
+        
+        }
+        catch(Exception e)
+        {
+            //
+            estab = null;
+        }
+        
+        return estab;
+        
     }
     
+    public List<Establishment> findAll(){
+        
+        List<Establishment> estab = null;
+        try{
+            EntityManager em = JpaUtil.obtenirContextePersistance();
+            String jpql = "SELECT e FROM Establishment e ORDER BY e.name ASC";
+            TypedQuery<Establishment> query = em.createQuery(jpql, Establishment.class);
+            
+            estab = query.getResultList();
+        }catch(Exception ex){
+            estab = null;
+        }
+        
+        return estab;
+    } 
+
 }

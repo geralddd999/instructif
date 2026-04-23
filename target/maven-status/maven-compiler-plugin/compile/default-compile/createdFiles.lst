@@ -1,0 +1,17 @@
+com\mycompany\instructif\Instructif.class
+dao\JpaUtil.class
+metier\service\DashboardService.class
+metier\modele\Student.class
+utils\Message.class
+metier\modele\TeacherIntervenant.class
+metier\service\AuthenticationService.class
+dao\IntervenantDao.class
+metier\service\UserManagementService.class
+utils\EstablishmentsRecordAPI.class
+dao\EstablishmentDao.class
+metier\modele\Establishment.class
+dao\JpaUtil$1.class
+metier\modele\OtherIntervenant.class
+dao\StudentDao.class
+metier\modele\Intervenant.class
+metier\modele\StudentIntervenant.class

@@ -4,36 +4,46 @@
  */
 package metier.modele;
 
-import java.util.ArrayList;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 /**
  *
  * @author gschambiram
  */
+@Entity
+@Inheritance (strategy=InheritanceType.JOINED)
 public class Intervenant {
-   @Id
+    @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     private String lastName;
     private String firstName;
     @Column(unique=true)
-    private String email;
+    private String login;
     private String password;
-    private ArrayList<Integer> level ;
+    private Integer minLevel ;
+    private Integer maxLevel ;
     private String phoneNumber;
     private Integer nbInterventions;
     private Boolean available ; 
 
-    public Intervenant(String lastName, String firstName, String email, String password, ArrayList<Integer> level, String phoneNumber, Integer nbInterventions, Boolean available) {
+    public Intervenant(String lastName, String firstName, String login,
+                       String password, Integer minLevel, Integer maxLevel, String phoneNumber,
+                       Integer nbInterventions, Boolean available) 
+    {
         this.lastName = lastName;
         this.firstName = firstName;
-        this.email = email;
+        this.login = login;
         this.password = password;
-        this.level = level;
+        this.minLevel = minLevel;
+        this.maxLevel = maxLevel;
         this.phoneNumber = phoneNumber;
         this.nbInterventions = nbInterventions;
         this.available = available;
@@ -54,16 +64,12 @@ public class Intervenant {
         return firstName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getLogin() {
+        return login;
     }
 
     public String getPassword() {
         return password;
-    }
-
-    public ArrayList<Integer> getLevel() {
-        return level;
     }
 
     public String getPhoneNumber() {
@@ -90,17 +96,14 @@ public class Intervenant {
         this.firstName = firstName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public void setLevel(ArrayList<Integer> level) {
-        this.level = level;
-    }
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
@@ -116,7 +119,7 @@ public class Intervenant {
 
     @Override
     public String toString() {
-        return "Intervenant{" + "id=" + id + ", lastName=" + lastName + ", firstName=" + firstName + ", email=" + email + ", password=" + password + ", level=" + level + ", phoneNumber=" + phoneNumber + ", nbInterventions=" + nbInterventions + ", available=" + available + '}';
+        return "Intervenant{" + "id=" + id + ", lastName=" + lastName + ", firstName=" + firstName + ", login=" + login + ", password=" + password + ", level=" + minLevel + ", phoneNumber=" + phoneNumber + ", nbInterventions=" + nbInterventions + ", available=" + available + '}';
     }
     
     
