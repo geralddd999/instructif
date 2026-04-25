@@ -1,3 +1,4 @@
+package utils;
 import dao.DemandeDao;
 import dao.JpaUtil;
 import metier.modele.Demande;
@@ -6,7 +7,6 @@ import metier.modele.Student;
 import metier.service.AuthenticationService;
 import metier.service.InterventionManagementService;
 import metier.service.UserManagementService;
-import utils.DataInitializer;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,43 +16,39 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SystemTest {
 
-    private static final UserManagementService        userService         = new UserManagementService();
-    private static final AuthenticationService        authService         = new AuthenticationService();
+    private static final UserManagementService userService = new UserManagementService();
+    private static final AuthenticationService authService = new AuthenticationService();
     private static final InterventionManagementService interventionService = new InterventionManagementService();
 
     private static int passed = 0;
     private static int failed = 0;
-
-    // ─── Entry point ──────────────────────────────────────────────────────────
 
     public static void runAll() {
         passed = 0;
         failed = 0;
         System.out.println("\n========= RUNNING SYSTEM TESTS =========\n");
 
-        // 1. Authentication
+        // Auth
         run("Student login — correct credentials",     SystemTest::test_studentLogin_success);
         run("Student login — wrong password",          SystemTest::test_studentLogin_wrongPassword);
         run("Student login — unknown email",           SystemTest::test_studentLogin_unknownEmail);
         run("Intervenant login — correct credentials", SystemTest::test_intervenantLogin_success);
         run("Intervenant login — wrong password",      SystemTest::test_intervenantLogin_wrongPassword);
 
-        // 2. Intervention
+        // Intervention - creation demande
         run("Create demande — success",                SystemTest::test_createDemande_success);
         run("Create demande — no intervenant match",   SystemTest::test_createDemande_noMatch);
         run("Create demande — load balancing",         SystemTest::test_loadBalancing);
         run("Save intervention report",                SystemTest::test_saveReport);
 
-        // 3. Concurrency
+        // Concurrency
         run("Concurrent demandes — one available slot",SystemTest::test_concurrent);
 
-        // 4. Full workflow
+        // Full "workflow"
         run("Full end-to-end workflow",                SystemTest::test_fullWorkflow);
 
         System.out.println("\n========= " + passed + " passed  |  " + failed + " failed =========\n");
     }
-
-    // ─── Mini test runner ─────────────────────────────────────────────────────
 
     private static void run(String name, Runnable body) {
         try {
@@ -68,7 +64,7 @@ public class SystemTest {
         }
     }
 
-    // ─── Assertion helpers ────────────────────────────────────────────────────
+    // Helpers ────────────────────────────────────────────────────
 
     private static void assertNotNull(Object obj, String msg) {
         if (obj == null) throw new AssertionError(msg);
@@ -93,8 +89,7 @@ public class SystemTest {
 
     // ─── Data helpers ─────────────────────────────────────────────────────────
 
-    /** Persists a fresh intervenant at the given level range with a preset intervention count. */
-    private static Intervenant seedIntervenant(String login, int minLevel, int maxLevel, int nbInterventions) {
+    private static Intervenant addIntervenant(String login, int minLevel, int maxLevel, int nbInterventions) {
         Intervenant i = new Intervenant(
             "Test", "Test", login, "testpass",
             minLevel, maxLevel, "0699999999", nbInterventions, true
@@ -102,15 +97,13 @@ public class SystemTest {
         userService.registerIntervenant(i);
         return i;
     }
-
-    /** Persists a fresh student at the given level, linked to the test establishment. */
-    private static Student seedStudent(String email, int level) {
+    
+    private static Student addStudent(String email, int level) {
         Student s = new Student("Test", "Test", email, "testpass", level, LocalDate.of(2006, 1, 1));
         userService.registerStudent(s, DataInitializer.EST_CODE);
         return s;
     }
 
-    /** Reads all demandes for a student from a fresh persistence context. */
     private static List<Demande> fetchDemandes(Student stu) {
         DemandeDao dao = new DemandeDao();
         List<Demande> result = null;
@@ -123,7 +116,7 @@ public class SystemTest {
         return result;
     }
 
-    // ─── 1. Authentication tests ──────────────────────────────────────────────
+    // ─── Authentication tests ──────────────────────────────────────────────
 
     private static void test_studentLogin_success() {
         Student stu = authService.loginStudent("luc@student.fr", "s1pass");
@@ -152,12 +145,12 @@ public class SystemTest {
         assertNull(interv, "Wrong password should return null");
     }
 
-    // ─── 2. Intervention tests ────────────────────────────────────────────────
+    // ───Intervention tests ────────────────────────────────────────────────
 
     private static void test_createDemande_success() {
-        // Level 6 is exclusive to this test — no seeded intervenants cover it.
-        seedIntervenant("interv.l6@instructif.fr", 6, 6, 0);
-        Student stu = seedStudent("stu.l6@student.fr", 6);
+        
+        addIntervenant("interv.l6@instructif.fr", 6, 6, 0);
+        Student stu = addStudent("stu.l6@student.fr", 6);
 
         Demande dmd = interventionService.createDemande(stu, "Mathématiques");
 
@@ -168,8 +161,8 @@ public class SystemTest {
     }
 
     private static void test_createDemande_noMatch() {
-        // Level 8 — no intervenants seeded for this level.
-        Student stu = seedStudent("stu.l8@student.fr", 8);
+        
+        Student stu = addStudent("stu.l8@student.fr", 8);
 
         Demande dmd = interventionService.createDemande(stu, "Histoire");
 
@@ -177,11 +170,10 @@ public class SystemTest {
     }
 
     private static void test_loadBalancing() {
-        // Two intervenants at level 7: one with 0 prior interventions, one with 5.
-        // The query sorts by nbInterventions ASC, so the fresh one must be chosen first.
-        Intervenant fresh = seedIntervenant("fresh.l7@instructif.fr", 7, 7, 0);
-        seedIntervenant("busy.l7@instructif.fr", 7, 7, 5);
-        Student stu = seedStudent("stu.l7@student.fr", 7);
+        // tests is the interv with the lowest num of interventions gets assigned
+        Intervenant fresh = addIntervenant("fresh.l7@instructif.fr", 7, 7, 0);
+        addIntervenant("busy.l7@instructif.fr", 7, 7, 5);
+        Student stu = addStudent("stu.l7@student.fr", 7);
 
         Demande dmd = interventionService.createDemande(stu, "Physique");
 
@@ -191,8 +183,8 @@ public class SystemTest {
     }
 
     private static void test_saveReport() {
-        seedIntervenant("interv.report@instructif.fr", 10, 10, 0);
-        Student stu = seedStudent("stu.report@student.fr", 10);
+        addIntervenant("interv.report@instructif.fr", 10, 10, 0);
+        Student stu = addStudent("stu.report@student.fr", 10);
 
         Demande dmd = interventionService.createDemande(stu, "Chimie");
         assertNotNull(dmd, "Precondition: demande must be created");
@@ -209,11 +201,10 @@ public class SystemTest {
     // ─── 3. Concurrency test ──────────────────────────────────────────────────
 
     private static void test_concurrent() {
-        // Exactly ONE intervenant at level 9. Two students race to get the slot.
-        // With optimistic locking, the loser retries, finds nobody available, and returns null.
-        seedIntervenant("interv.race@instructif.fr", 9, 9, 0);
-        Student racer1 = seedStudent("racer1@student.fr", 9);
-        Student racer2 = seedStudent("racer2@student.fr", 9);
+        // Exactly one intervenant available. two students race to get the slot. only one should get it
+        addIntervenant("interv.race@instructif.fr", 9, 9, 0);
+        Student racer1 = addStudent("racer1@student.fr", 9);
+        Student racer2 = addStudent("racer2@student.fr", 9);
 
         CountDownLatch startGun  = new CountDownLatch(1);
         CountDownLatch bothDone  = new CountDownLatch(2);
@@ -240,14 +231,13 @@ public class SystemTest {
             "Exactly one demande should succeed when only one intervenant slot is available");
     }
 
-    // ─── 4. Full end-to-end workflow ──────────────────────────────────────────
+    // ─── Full "system" workflow ──────────────────────────────────────────
 
     private static void test_fullWorkflow() {
-        // Level 11 — isolated level for this test.
-        seedIntervenant("interv.wf@instructif.fr", 11, 11, 0);
-        seedStudent("stu.wf@student.fr", 11);
+        
+        addIntervenant("interv.wf@instructif.fr", 11, 11, 0);
+        addStudent("stu.wf@student.fr", 11);
 
-        // Authenticate (simulates the login page)
         Student loggedIn = authService.loginStudent("stu.wf@student.fr", "testpass");
         assertNotNull(loggedIn, "Student should be able to log in after registration");
 
@@ -266,7 +256,7 @@ public class SystemTest {
         assertEquals(1, history.size(), "Student should have exactly one demande in history");
         assertEquals(report, history.get(0).getReport(), "Persisted report must match");
 
-        // Send the report by email (just verify no exception is thrown)
+        // Send the report by email 
         try {
             interventionService.sendReportByEmail(history.get(0));
         } catch (Exception e) {

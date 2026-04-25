@@ -53,7 +53,7 @@ public class InterventionManagementService {
 
     
     public Demande createDemande(Student stu, String subject) {
-        int maxRetries = 3;
+        int maxRetries = 3; //maybe make it a global variable configurable elsewhere idk
         for (int attempt = 0; attempt < maxRetries; attempt++) {
             Demande dmd = null;
             IntervenantDao intervenantDao = new IntervenantDao();
@@ -104,6 +104,7 @@ public class InterventionManagementService {
     }
 
     private Intervenant findAndReserveIntervenant(Integer level, IntervenantDao intervenantDao) {
+        // add the try catch
         Intervenant interv = intervenantDao.findAvailableIntervenant(level, level);
         if (interv != null) {
             interv.setAvailable(false);
