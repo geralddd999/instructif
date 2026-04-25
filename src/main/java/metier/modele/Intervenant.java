@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Version;
 
 /**
  *
@@ -32,7 +33,9 @@ public class Intervenant {
     private Integer maxLevel ;
     private String phoneNumber;
     private Integer nbInterventions;
-    private Boolean available ; 
+    private Boolean available ;
+    @Version
+    private Long version;
 
     public Intervenant(String lastName, String firstName, String login,
                        String password, Integer minLevel, Integer maxLevel, String phoneNumber,
@@ -115,6 +118,22 @@ public class Intervenant {
 
     public void setAvailable(Boolean available) {
         this.available = available;
+    }
+
+    public Integer getMinLevel() {
+        return minLevel;
+    }
+
+    public void setMinLevel(Integer minLevel) {
+        this.minLevel = minLevel;
+    }
+
+    public Integer getMaxLevel() {
+        return maxLevel;
+    }
+
+    public void setMaxLevel(Integer maxLevel) {
+        this.maxLevel = maxLevel;
     }
 
     @Override

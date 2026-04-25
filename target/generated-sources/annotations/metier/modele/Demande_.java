@@ -8,7 +8,7 @@ import metier.modele.Establishment;
 import metier.modele.Intervenant;
 import metier.modele.Student;
 
-@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2026-04-23T17:12:01", comments="EclipseLink-2.7.12.v20230209-rNA")
+@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2026-04-25T11:47:51", comments="EclipseLink-2.7.12.v20230209-rNA")
 @StaticMetamodel(Demande.class)
 public class Demande_ { 
 

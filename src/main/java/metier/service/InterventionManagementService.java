@@ -11,6 +11,8 @@ import dao.DemandeDao;
 import dao.IntervenantDao;
 import dao.JpaUtil;
 import utils.Message;
+import javax.persistence.OptimisticLockException;
+import javax.persistence.RollbackException;
 
 public class InterventionManagementService {
 
@@ -51,42 +53,54 @@ public class InterventionManagementService {
 
     
     public Demande createDemande(Student stu, String subject) {
-        // Creates a demand for a student on a given subject.
-        // Returns null if no intervenant is available (demand is cancelled).
-        Demande dmd = null;
-        IntervenantDao intervenantDao = new IntervenantDao();
-        DemandeDao demandeDao = new DemandeDao();
-        try {
-            JpaUtil.creerContextePersistance();
-            JpaUtil.ouvrirTransaction();
+        int maxRetries = 3;
+        for (int attempt = 0; attempt < maxRetries; attempt++) {
+            Demande dmd = null;
+            IntervenantDao intervenantDao = new IntervenantDao();
+            DemandeDao demandeDao = new DemandeDao();
+            try {
+                JpaUtil.creerContextePersistance();
+                JpaUtil.ouvrirTransaction();
 
-            Intervenant interv = findAndReserveIntervenant(stu.getStudentClass(), intervenantDao);
+                Intervenant interv = findAndReserveIntervenant(stu.getStudentClass(), intervenantDao);
 
-            if (interv == null) {
-                // Nobody available — cancel the demand
+                if (interv == null) {
+                    JpaUtil.validerTransaction();
+                    return null;
+                }
+
+                dmd = new Demande();
+                dmd.setStudent(stu);
+                dmd.setEstablishment(stu.getEstablishment());
+                dmd.setIntervenant(interv);
+                dmd.setSubject(subject);
+                demandeDao.create(dmd);
+
                 JpaUtil.validerTransaction();
+
+                notifyIntervenant(interv, dmd);
+                return dmd;
+
+            } catch (OptimisticLockException ex) {
+                // Another demande got the intervenant we wanted
+                JpaUtil.annulerTransaction();
+            } catch (RollbackException ex) {
+                // this is done for some reason that i still dont understand,
+                // something about a RollbackException getting wrapped by the commit call
+                if (ex.getCause() instanceof OptimisticLockException) {
+                    JpaUtil.annulerTransaction();
+                } else {
+                    JpaUtil.annulerTransaction();
+                    return null;
+                }
+            } catch (Exception ex) {
+                JpaUtil.annulerTransaction();
                 return null;
+            } finally {
+                JpaUtil.fermerContextePersistance();
             }
-
-            // change to either use the full constructor and all the details
-            dmd = new Demande();
-            dmd.setStudent(stu);
-            dmd.setEstablishment(stu.getEstablishment());
-            dmd.setIntervenant(interv);
-            dmd.setSubject(subject);
-            demandeDao.create(dmd);
-
-            JpaUtil.validerTransaction();
-
-            notifyIntervenant(interv, dmd);
-
-        } catch (Exception ex) {
-            JpaUtil.annulerTransaction();
-            dmd = null;
-        } finally {
-            JpaUtil.fermerContextePersistance();
         }
-        return dmd;
+        return null; // we got shyt vroda
     }
 
     private Intervenant findAndReserveIntervenant(Integer level, IntervenantDao intervenantDao) {

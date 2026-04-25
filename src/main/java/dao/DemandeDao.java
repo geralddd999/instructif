@@ -28,7 +28,7 @@ public class DemandeDao {
         List<Demande> res = null;
 
         try{
-            String jpql = "SELECT d FROM Demande WHERE d.student = :searchStudent";
+            String jpql = "SELECT d FROM Demande d WHERE d.student = :searchStudent";
 
             TypedQuery<Demande> query = em.createQuery(jpql, Demande.class);
             query.setParameter("searchStudent", stu);
@@ -48,7 +48,7 @@ public class DemandeDao {
         List<Demande> res = null;
 
         try{
-            String jpql = "SELECT d FROM Demande WHERE d.intervenant = :searchIntervenant";
+            String jpql = "SELECT d FROM Demande d WHERE d.intervenant = :searchIntervenant";
 
             TypedQuery<Demande> query = em.createQuery(jpql, Demande.class);
             query.setParameter("searchIntervenant", it);
