@@ -1,18 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package metier.modele;
 
-/**
- *
- * @author gschambiram
- */
+import javax.persistence.Entity;
+
+@Entity
 public class StudentIntervenant extends Intervenant {
-    private String university; //
-    private String speciality; //more like major or something like that
+    private String university;
+    private String speciality;
 
-    public StudentIntervenant(){
+    public StudentIntervenant() {}
 
-    }
+    public String getUniversity() { return university; }
+    public void setUniversity(String university) { this.university = university; }
+
+    public String getSpeciality() { return speciality; }
+    public void setSpeciality(String speciality) { this.speciality = speciality; }
 }

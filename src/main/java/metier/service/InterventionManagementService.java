@@ -1,11 +1,12 @@
 package metier.service;
 
 import metier.modele.Demande;
-import metier.modele.Establishment;
 import metier.modele.Intervenant;
 import metier.modele.Student;
+import metier.modele.Subjects;
+import metier.modele.Theme;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 import dao.DemandeDao;
 import dao.IntervenantDao;
@@ -13,13 +14,13 @@ import dao.JpaUtil;
 import utils.Message;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.RollbackException;
-import metier.modele.Subjects;
 
 public class InterventionManagementService {
 
     public void notifyIntervenant(Intervenant interv, Demande dmd) {
+        String subjectName = dmd.getSubject() != null ? dmd.getSubject().getName() : "matière inconnue";
         String msg = "Bonjour " + interv.getFirstName() + ". Merci de "
-                + "prendre en charge la demande de soutien en " + "<<" + dmd.getSubject() + ">>"
+                + "prendre en charge la demande de soutien en " + "<<" + subjectName + ">>"
                 + " demandée à " + dmd.getDate() + " par " + dmd.getStudent().getFirstName()
                 + " " + dmd.getStudent().getLastName() + " en classe de "
                 + dmd.getStudent().getStudentClass() + ".";
@@ -33,11 +34,19 @@ public class InterventionManagementService {
 
     public void saveInterventionReport(Demande dmd, String report) {
         DemandeDao demandeDao = new DemandeDao();
+        IntervenantDao intervenantDao = new IntervenantDao();
         try {
             JpaUtil.creerContextePersistance();
             JpaUtil.ouvrirTransaction();
+
             dmd.setReport(report);
             dmd = demandeDao.update(dmd);
+
+            // free the intervenant so they can take new demandes.
+            Intervenant interv = dmd.getIntervenant();
+            interv.setAvailable(true);
+            intervenantDao.update(interv);
+
             JpaUtil.validerTransaction();
         } catch (Exception ex) {
             JpaUtil.annulerTransaction();
@@ -47,14 +56,14 @@ public class InterventionManagementService {
     }
 
     public void sendReportByEmail(Demande dmd) {
-        String objet = "Bilan de l'intervention de " + dmd.getSubject() + " (" + dmd.getDate() + ")";
+        String subjectName = dmd.getSubject() != null ? dmd.getSubject().getName() : "matière inconnue";
+        String objet = "Bilan de l'intervention de " + subjectName + " (" + dmd.getDate() + ")";
         String msg = dmd.getReport();
         Message.envoyerMail(dmd.getIntervenant().getLogin(), dmd.getStudent().getEmail(), objet, msg);
     }
 
-    
-    public Demande createDemande(Student stu, Subjects subject) {
-        int maxRetries = 3; //maybe make it a global variable configurable elsewhere idk
+    public Demande createDemande(Student stu, Subjects subject, Theme theme, String request) {
+        int maxRetries = 3;
         for (int attempt = 0; attempt < maxRetries; attempt++) {
             Demande dmd = null;
             IntervenantDao intervenantDao = new IntervenantDao();
@@ -75,6 +84,9 @@ public class InterventionManagementService {
                 dmd.setEstablishment(stu.getEstablishment());
                 dmd.setIntervenant(interv);
                 dmd.setSubject(subject);
+                dmd.setTheme(theme);
+                dmd.setRequest(request);
+                dmd.setDate(LocalDateTime.now());
                 demandeDao.create(dmd);
 
                 JpaUtil.validerTransaction();
@@ -83,11 +95,8 @@ public class InterventionManagementService {
                 return dmd;
 
             } catch (OptimisticLockException ex) {
-                // Another demande got the intervenant we wanted
                 JpaUtil.annulerTransaction();
             } catch (RollbackException ex) {
-                // this is done for some reason that i still dont understand,
-                // something about a RollbackException getting wrapped by the commit call
                 if (ex.getCause() instanceof OptimisticLockException) {
                     JpaUtil.annulerTransaction();
                 } else {
@@ -101,11 +110,10 @@ public class InterventionManagementService {
                 JpaUtil.fermerContextePersistance();
             }
         }
-        return null; // we got shyt vroda
+        return null;
     }
 
     private Intervenant findAndReserveIntervenant(Integer level, IntervenantDao intervenantDao) {
-        // add the try catch
         Intervenant interv = intervenantDao.findAvailableIntervenant(level, level);
         if (interv != null) {
             interv.setAvailable(false);
@@ -114,6 +122,4 @@ public class InterventionManagementService {
         }
         return interv;
     }
-
-    
 }

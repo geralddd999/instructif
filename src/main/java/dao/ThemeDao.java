@@ -19,8 +19,12 @@ public class ThemeDao {
     }
 
     public Theme findById(Long id) {
-        EntityManager em = JpaUtil.obtenirContextePersistance();
-        return em.find(Theme.class, id);
+        try {
+            EntityManager em = JpaUtil.obtenirContextePersistance();
+            return em.find(Theme.class, id);
+        } catch (Exception e) {
+            return null;
+        }
     }
     
 }

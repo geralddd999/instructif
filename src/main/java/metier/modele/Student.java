@@ -17,8 +17,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 
 /**
@@ -38,14 +36,11 @@ public class Student {
     private Integer studentClass;
     private LocalDate birthDate;
 
-    // would have to change this one to either many to many or many to one, cause a student
-    // can only be registered at one lycee (logic constraint ig?)
     @ManyToOne
     private Establishment establishment;
     @OneToMany(mappedBy = "student")
     private List<Demande> demandes = new ArrayList<>();
-    // would have to change this one to either many to many or many to one, cause a student
-    // can only be registered at one lycee (logic con  
+
 
     public Long getId() {
         return id;

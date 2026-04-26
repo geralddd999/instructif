@@ -2,11 +2,7 @@ package metier.modele;
 
 import java.time.LocalDateTime;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.CascadeType;
-import javax.persistence.Enumerated;
-import javax.persistence.EnumType;
-import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

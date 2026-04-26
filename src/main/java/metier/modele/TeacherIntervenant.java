@@ -1,18 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package metier.modele;
 
-/**
- *
- * @author gschambiram
- */
-public class TeacherIntervenant extends Intervenant{
-    private String  institutionType;
+import javax.persistence.Entity;
 
+@Entity
+public class TeacherIntervenant extends Intervenant {
+    private String institutionType;
 
-    public TeacherIntervenant(){
+    public TeacherIntervenant() {}
 
-    }
+    public String getInstitutionType() { return institutionType; }
+    public void setInstitutionType(String institutionType) { this.institutionType = institutionType; }
 }

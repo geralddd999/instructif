@@ -8,7 +8,7 @@ public class Instructif {
 
     public static void main(String[] args) {
         JpaUtil.creerFabriquePersistance();  
-        DataInitializer.initialize();      
+        DataInitializer.init();      
         SystemTest.runAll();                  // runs all tests and prints results
         JpaUtil.fermerFabriquePersistance();
     }

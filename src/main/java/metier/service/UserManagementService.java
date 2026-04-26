@@ -8,7 +8,6 @@ import dao.EstablishmentDao;
 import dao.IntervenantDao;
 import dao.JpaUtil;
 import dao.StudentDao;
-import java.util.List;
 import metier.modele.Establishment;
 import metier.modele.Intervenant;
 import metier.modele.Student;

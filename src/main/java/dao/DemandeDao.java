@@ -81,11 +81,11 @@ public class DemandeDao {
     }
     
     public List<String> topSubjectsByEstablishment(Establishment estab) {
-        // Returns subjects ordered from most to least requested for that establishment.
+        // Returns subject names ordered from most to least requested for that establishment.
         EntityManager em = JpaUtil.obtenirContextePersistance();
         return em.createQuery(
-                "SELECT d.subject FROM Demande d WHERE d.establishment = :estab "
-                + "GROUP BY d.subject ORDER BY COUNT(d) DESC", String.class)
+                "SELECT d.subject.name FROM Demande d WHERE d.establishment = :estab "
+                + "GROUP BY d.subject.name ORDER BY COUNT(d) DESC", String.class)
                 .setParameter("estab", estab)
                 .getResultList();
     }

@@ -1,10 +1,7 @@
 package metier.modele;
 
-/**
- *
- * @author gschambiram
- */
-public class OtherIntervenant extends Intervenant{
-    
-}
+import javax.persistence.Entity;
 
+@Entity
+public class OtherIntervenant extends Intervenant {
+}

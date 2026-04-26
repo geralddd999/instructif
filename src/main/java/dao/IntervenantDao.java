@@ -6,6 +6,7 @@ package dao;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import metier.modele.Intervenant;
 
@@ -23,13 +24,17 @@ public class IntervenantDao {
     
     public Intervenant findByEmail(String login)
     {
-        EntityManager em = JpaUtil.obtenirContextePersistance();
-        String jpql = "SELECT i FROM Intervenant i WHERE i.login = :searchLogin";
-        
-        TypedQuery<Intervenant> query = em.createQuery(jpql, Intervenant.class);
-        query.setParameter("searchLogin", login);
-        
-        return query.getSingleResult();
+        try {
+            EntityManager em = JpaUtil.obtenirContextePersistance();
+            TypedQuery<Intervenant> query = em.createQuery(
+                "SELECT i FROM Intervenant i WHERE i.login = :searchLogin", Intervenant.class);
+            query.setParameter("searchLogin", login);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
     }
     
     public Intervenant findAvailableIntervenant(Integer minLevel, Integer maxLevel)

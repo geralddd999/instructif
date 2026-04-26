@@ -5,8 +5,8 @@
 package dao;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
-
 import metier.modele.Student;
 /**
  *
@@ -19,14 +19,18 @@ public class StudentDao {
         em.persist(stu);
     }
 
-    public Student findByEmail(String email){
-        EntityManager em = JpaUtil.obtenirContextePersistance();
-
-        String jpql = "SELECT s FROM Student s WHERE s.email = :searchEmail ";
-        TypedQuery<Student> query = em.createQuery(jpql, Student.class);
-        query.setParameter("searchEmail", email);
-
-        return query.getSingleResult();
+    public Student findByEmail(String email) {
+        try {
+            EntityManager em = JpaUtil.obtenirContextePersistance();
+            TypedQuery<Student> query = em.createQuery(
+                "SELECT s FROM Student s WHERE s.email = :searchEmail", Student.class);
+            query.setParameter("searchEmail", email);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }

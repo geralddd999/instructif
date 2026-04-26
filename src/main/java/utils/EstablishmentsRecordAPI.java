@@ -107,10 +107,19 @@ public class EstablishmentsRecordAPI {
             String academy = json.getString("libelle_academie");
             String postalCode = json.getString("code_postal_uai");
 
-            return new Establishment(code, name, sector,
-                    address, postalCode, commune, lat, lon,
-                    departmentCode, academyCode,
-                    department, academy);
+        Establishment est = new Establishment(code, name, sector,
+                address, postalCode, commune, lat, lon,
+                departmentCode, academyCode,
+                department, academy);
+
+        // IPS data is only available for collèges — silently skip if missing.
+        ArrayList<Double> ips = EstablishmentsRecordAPI.getEstablishmentIPSFromAPI(establishmentUai);
+        if (ips != null) {
+            est.setIps(ips.get(0));
+            est.setIpsEcartType(ips.get(1));
+        }
+
+        return est;
     }
     public static ArrayList<Double> getEstablishmentIPSFromAPI(String establishmentUai){
         JsonObject json = EstablishmentsRecordAPI.fetchEstablishmentIPSFromAPI(establishmentUai);
