@@ -23,8 +23,6 @@ public class Establishment {
     private String academyCode;
     private String departmentName;
     private String academyName;
-    // IPS = Indice de Position Sociale — a social deprivation score from the government API.
-    // Null when the establishment is not in the IPS dataset (e.g. lycées, private schools).
     private Double ips;
     private Double ipsEcartType;
 

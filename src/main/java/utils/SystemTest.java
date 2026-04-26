@@ -203,9 +203,9 @@ public class SystemTest {
 
     private static void test_concurrent() {
         // Exactly one intervenant available. two students race to get the slot. only one should get it
-        addIntervenant("interv.race@instructif.fr", 9, 9, 0);
-        Student racer1 = addStudent("racer1@student.fr", 9);
-        Student racer2 = addStudent("racer2@student.fr", 9);
+        addIntervenant("interv@instructif.fr", 9, 9, 0);
+        Student racer1 = addStudent("r1@student.fr", 9);
+        Student racer2 = addStudent("r2@student.fr", 9);
 
         CountDownLatch startGun  = new CountDownLatch(1);
         CountDownLatch bothDone  = new CountDownLatch(2);
@@ -223,7 +223,7 @@ public class SystemTest {
         startGun.countDown(); // release both threads at the exact same instant
         try {
             boolean finished = bothDone.await(10, TimeUnit.SECONDS);
-            assertTrue(finished, "Both threads should complete within 10 seconds");
+            assertTrue(finished, "it should finish by ow");
         } catch (InterruptedException e) {
             throw new AssertionError("Test was interrupted: " + e.getMessage());
         }

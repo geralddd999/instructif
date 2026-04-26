@@ -112,7 +112,6 @@ public class EstablishmentsRecordAPI {
                 departmentCode, academyCode,
                 department, academy);
 
-        // IPS data is only available for collèges — silently skip if missing.
         ArrayList<Double> ips = EstablishmentsRecordAPI.getEstablishmentIPSFromAPI(establishmentUai);
         if (ips != null) {
             est.setIps(ips.get(0));
