@@ -33,8 +33,12 @@ public class Demande {
 
     @ManyToOne
     private Establishment establishment;
+    
+    @ManyToOne(cascade=CascadeType.PERSIST)
 
     private Subjects subject;
+    
+    @ManyToOne(cascade=CascadeType.PERSIST)
     private Theme theme;
 
     private LocalDateTime date;

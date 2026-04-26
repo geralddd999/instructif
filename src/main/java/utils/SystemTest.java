@@ -158,7 +158,7 @@ public class SystemTest {
         assertNotNull(dmd, "Should return a Demande when an intervenant is available");
         assertNotNull(dmd.getIntervenant(), "Demande should have an assigned intervenant");
         assertEquals("interv.l6@instructif.fr", dmd.getIntervenant().getLogin(), "Assigned intervenant should be the one at level 6");
-        assertEquals("Mathématiques", dmd.getSubject(), "Subject should be saved on the demande");
+        assertEquals("Mathématiques", dmd.getSubject().getName(), "Subject should be saved on the demande");
     }
 
     private static void test_createDemande_noMatch() {

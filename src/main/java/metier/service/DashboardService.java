@@ -5,8 +5,6 @@
 package metier.service;
 
 
-import java.util.ArrayList;
-import metier.modele.Establishment;
 
 /**
  *
@@ -20,6 +18,8 @@ public class DashboardService {
 
     // something for intervenant stats
 
-    //function for a single establishment statistics
+    //function for a single establishment statistics 
+   
+    
 
 }

@@ -1,5 +1,8 @@
 package utils;
 
+import dao.SubjectsDao;
+import metier.modele.Subjects;
+import metier.modele.Theme;
 import dao.EstablishmentDao;
 import dao.JpaUtil;
 import metier.modele.Establishment;
@@ -16,7 +19,39 @@ public class DataInitializer {
         seedEstablishment();
         seedIntervenants();
         seedStudents();
+        seedSubjectsAndThemes();
     }
+    
+    private static void seedSubjectsAndThemes() {
+        SubjectsDao dao = new SubjectsDao();
+        try {
+            JpaUtil.creerContextePersistance();
+            JpaUtil.ouvrirTransaction();
+
+            Subjects math = new Subjects("Mathématiques");
+            math.addTheme(new Theme("Algèbre", math));
+            math.addTheme(new Theme("Géométrie", math));
+
+            Subjects francais = new Subjects("Français");
+            francais.addTheme(new Theme("Grammaire", francais));
+            francais.addTheme(new Theme("Expression écrite", francais));
+
+            Subjects histoire = new Subjects("Histoire-Géographie");
+            histoire.addTheme(new Theme("Moyen Âge", histoire));
+            histoire.addTheme(new Theme("Révolution française", histoire));
+
+            dao.create(math);
+            dao.create(francais);
+            dao.create(histoire);
+
+            JpaUtil.validerTransaction();
+        } catch (Exception e) {
+            JpaUtil.annulerTransaction();
+            e.printStackTrace();
+        } finally {
+            JpaUtil.fermerContextePersistance();
+    }
+}
 
     private static void seedEstablishment() {
         EstablishmentDao dao = new EstablishmentDao();
