@@ -4,6 +4,7 @@ import dao.JpaUtil;
 import metier.modele.Demande;
 import metier.modele.Intervenant;
 import metier.modele.Student;
+import metier.modele.Subjects;
 import metier.service.AuthenticationService;
 import metier.service.InterventionManagementService;
 import metier.service.UserManagementService;
@@ -152,7 +153,7 @@ public class SystemTest {
         addIntervenant("interv.l6@instructif.fr", 6, 6, 0);
         Student stu = addStudent("stu.l6@student.fr", 6);
 
-        Demande dmd = interventionService.createDemande(stu, "Mathématiques");
+        Demande dmd = interventionService.createDemande(stu, new Subjects("Mathématiques"));
 
         assertNotNull(dmd, "Should return a Demande when an intervenant is available");
         assertNotNull(dmd.getIntervenant(), "Demande should have an assigned intervenant");
@@ -164,7 +165,7 @@ public class SystemTest {
         
         Student stu = addStudent("stu.l8@student.fr", 8);
 
-        Demande dmd = interventionService.createDemande(stu, "Histoire");
+        Demande dmd = interventionService.createDemande(stu, new Subjects("Histoire"));
 
         assertNull(dmd, "Should return null when no intervenant covers the student's level");
     }
@@ -175,7 +176,7 @@ public class SystemTest {
         addIntervenant("busy.l7@instructif.fr", 7, 7, 5);
         Student stu = addStudent("stu.l7@student.fr", 7);
 
-        Demande dmd = interventionService.createDemande(stu, "Physique");
+        Demande dmd = interventionService.createDemande(stu, new Subjects("Physique"));
 
         assertNotNull(dmd, "Should create a demande when intervenants are available");
         assertEquals(fresh.getId(), dmd.getIntervenant().getId(),
@@ -186,7 +187,7 @@ public class SystemTest {
         addIntervenant("interv.report@instructif.fr", 10, 10, 0);
         Student stu = addStudent("stu.report@student.fr", 10);
 
-        Demande dmd = interventionService.createDemande(stu, "Chimie");
+        Demande dmd = interventionService.createDemande(stu, new Subjects("Chimie"));
         assertNotNull(dmd, "Precondition: demande must be created");
 
         String reportText = "L'élève a bien progressé sur la résolution d'équations.";
@@ -213,7 +214,7 @@ public class SystemTest {
         for (Student racer : new Student[]{ racer1, racer2 }) {
             new Thread(() -> {
                 try { startGun.await(); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
-                Demande d = interventionService.createDemande(racer, "Mathématiques");
+                Demande d = interventionService.createDemande(racer, new Subjects("Mathématiques"));
                 if (d != null) successCount.incrementAndGet();
                 bothDone.countDown();
             }).start();
@@ -242,7 +243,7 @@ public class SystemTest {
         assertNotNull(loggedIn, "Student should be able to log in after registration");
 
         // Submit a demande
-        Demande dmd = interventionService.createDemande(loggedIn, "Informatique");
+        Demande dmd = interventionService.createDemande(loggedIn, new Subjects("Informatique"));
         assertNotNull(dmd, "Demande should be created for the logged-in student");
         assertNotNull(dmd.getIntervenant(), "Demande should have an assigned intervenant");
 

@@ -13,6 +13,7 @@ import dao.JpaUtil;
 import utils.Message;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.RollbackException;
+import metier.modele.Subjects;
 
 public class InterventionManagementService {
 
@@ -52,7 +53,7 @@ public class InterventionManagementService {
     }
 
     
-    public Demande createDemande(Student stu, String subject) {
+    public Demande createDemande(Student stu, Subjects subject) {
         int maxRetries = 3; //maybe make it a global variable configurable elsewhere idk
         for (int attempt = 0; attempt < maxRetries; attempt++) {
             Demande dmd = null;
