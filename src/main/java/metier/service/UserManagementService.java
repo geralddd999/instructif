@@ -62,12 +62,17 @@ public class UserManagementService {
             }
             
             JpaUtil.validerTransaction();
-            obj = "Bienvenue sur ...";
+            obj = "Bienvenue sur le reseau INSTRUCT'IF";
+            corps = "Bonjour" + student.getFirstName() + ",nous te confirmons ton inscription" 
+                    + "sur le reseau INSTRUCT'IF, Si tu as besoin d'un soutien pour tes lecons ou tes devoirs"
+                    + ", rends-toi sur notre site pour une mise en relation avec un intervenant";
             
         } catch(Exception ex){
             ex.printStackTrace();
             JpaUtil.annulerTransaction();
-            obj = "Echec";
+            obj = "Echec de l'inscription sur le reseau INSTRUCT'IF";
+            corps = "Bonjour" + student.getFirstName() + "ton inscription sur le réseau INSTRUCTIF a"
+                    + "malencontreusement echoue... Merci de recommencer ulterieurement" ;
         } finally{
             JpaUtil.fermerContextePersistance();
             Message.envoyerMail(mailExp, mailDest, obj, corps);
@@ -105,64 +110,6 @@ public class UserManagementService {
         return success;
     }
 
-
-    public Intervenant findAvailableIntervenant(Integer minLevel, Integer maxLevel)
-    /*
-    *  Gets an available intervenant for a given student, now its up to debate if to pass the whole student of just
-    *  use the getters for the levels, but either way it almost stays the same
-    * */
-    {
-        IntervenantDao intervenantDao = new IntervenantDao();
-        
-        Intervenant interv = null;
-        try
-        {
-            JpaUtil.creerContextePersistance();
-            JpaUtil.ouvrirTransaction();
-
-            interv = intervenantDao.findAvailableIntervenant(minLevel, maxLevel);
-
-            if (interv != null)
-            {
-                interv.setAvailable(false);
-                interv.setNbInterventions(interv.getNbInterventions() + 1);
-                interv = intervenantDao.update(interv);
-            }
-
-            JpaUtil.validerTransaction();
-            //here we deal with the logic if we do have an intervenant available or if we just close the ticket
-        }
-        catch(Exception ex)
-        {
-            JpaUtil.annulerTransaction();
-        }
-        finally
-        {
-            JpaUtil.fermerContextePersistance();
-        }
-        
-        return interv;
-    }
-
-    // Manage user login's
-
-    public Boolean authenticateUser(String login, String password){
-
-        // get the user, if it doesn't exist, return false and say either say wrong passwd or email
-        // if the user exists then compare the passwords
-
-        // because we have two types of users, we would have to check if an account linked to the email exists
-        // for a student, and then for a intervenant, but considering we would have two different login pages,
-        // it could help us do to it differently, maybe add a different attribute? like from page
-
-        // how do we assure unique emails if we two separate tables, when registering we would have to check if
-        // the email is already present in the db?
-
-        //check if
-
-        return false;
-    }
-    //notify intervenant of a potential meeting
     
     public Student findStudentByEmail(String email)
     {
@@ -180,4 +127,5 @@ public class UserManagementService {
         }
         return stu;
     }
+
 }
