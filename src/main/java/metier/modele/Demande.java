@@ -1,11 +1,22 @@
 package metier.modele;
 
 import java.time.LocalDateTime;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
+import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+
+
+/**
+ *
+ * @author DELL
+ */
 
 @Entity
 public class Demande {
@@ -23,9 +34,12 @@ public class Demande {
     @ManyToOne
     private Establishment establishment;
 
-    private String subject;
+    private Subjects subject;
+    private Theme theme;
+
     private LocalDateTime date;
     private Integer durationMinutes;
+    private String request;
     private String report;
 
     public Demande() {}
@@ -41,8 +55,12 @@ public class Demande {
     public Establishment getEstablishment() { return establishment; }
     public void setEstablishment(Establishment establishment) { this.establishment = establishment; }
 
-    public String getSubject() { return subject; }
-    public void setSubject(String subject) { this.subject = subject; }
+    public Subjects getSubject() { return subject; }
+    public void setSubject(Subjects subject) { this.subject = subject; }
+
+    public Theme getTheme() {return theme;}
+    public void setTheme(Theme theme) { this.theme = theme; }
+
 
     public LocalDateTime getDate() { return date; }
     public void setDate(LocalDateTime date) { this.date = date; }
@@ -50,11 +68,23 @@ public class Demande {
     public Integer getDurationMinutes() { return durationMinutes; }
     public void setDurationMinutes(Integer durationMinutes) { this.durationMinutes = durationMinutes; }
 
+    public String getRequest() { return request; }
+    public void setRequest(String request) { this.request = request; }
+
+
     public String getReport() { return report; }
     public void setReport(String report) { this.report = report; }
 
     @Override
     public String toString() {
-        return "Demande{subject=" + subject + ", date=" + date + ", establishment=" + establishment + "}";
+        return "Demande{" +
+                "id=" + id +
+                ", subject=" + subject +
+                ", theme='" + theme + '\'' +
+                ", request='" + request + '\'' +
+                ", date=" + date +
+                ", durationMinutes=" + durationMinutes +
+                '}';
     }
 }
+

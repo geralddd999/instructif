@@ -1,0 +1,114 @@
+[
+  {
+    "subject": "Mathematics",
+    "themes": [
+      "Algebra",
+      "Geometry",
+      "Trigonometry",
+      "Calculus",
+      "Statistics",
+      "Probability",
+      "Logic"
+    ]
+  },
+  {
+    "subject": "Computer Science",
+    "themes": [
+      "Algorithms",
+      "Data Structures",
+      "Object-Oriented Programming",
+      "Databases",
+      "Operating Systems",
+      "Networking",
+      "Software Engineering"
+    ]
+  },
+  {
+    "subject": "Physics",
+    "themes": [
+      "Mechanics",
+      "Thermodynamics",
+      "Electricity",
+      "Magnetism",
+      "Optics",
+      "Waves",
+      "Modern Physics"
+    ]
+  },
+  {
+    "subject": "Chemistry",
+    "themes": [
+      "Atomic Structure",
+      "Chemical Reactions",
+      "Organic Chemistry",
+      "Inorganic Chemistry",
+      "Thermochemistry",
+      "Electrochemistry"
+    ]
+  },
+  {
+    "subject": "Biology",
+    "themes": [
+      "Cell Biology",
+      "Genetics",
+      "Human Anatomy",
+      "Evolution",
+      "Ecology",
+      "Microbiology"
+    ]
+  },
+  {
+    "subject": "History",
+    "themes": [
+      "Ancient Civilizations",
+      "Middle Ages",
+      "Modern History",
+      "World Wars",
+      "Revolutions",
+      "Contemporary History"
+    ]
+  },
+  {
+    "subject": "Geography",
+    "themes": [
+      "Physical Geography",
+      "Climate",
+      "Population Studies",
+      "Urbanization",
+      "Natural Resources",
+      "Geopolitics"
+    ]
+  },
+  {
+    "subject": "English",
+    "themes": [
+      "Grammar",
+      "Vocabulary",
+      "Literature",
+      "Writing Skills",
+      "Reading Comprehension",
+      "Speaking Skills"
+    ]
+  },
+  {
+    "subject": "Philosophy",
+    "themes": [
+      "Ethics",
+      "Metaphysics",
+      "Logic",
+      "Epistemology",
+      "Political Philosophy"
+    ]
+  },
+  {
+    "subject": "Economics",
+    "themes": [
+      "Microeconomics",
+      "Macroeconomics",
+      "Supply and Demand",
+      "Market Structures",
+      "Economic Policy",
+      "Global Economy"
+    ]
+  }
+]
